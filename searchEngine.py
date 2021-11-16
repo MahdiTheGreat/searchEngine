@@ -43,10 +43,8 @@ class Index:
 
    for j in range(len(doc)):
     word = doc[j]
-
-    if word not in stopWords:
-     if word not in self.index.keys():self.index[word] = Term(id=word)
-     self.index[word].insert(docId=i, position=j)
+    if word not in self.index.keys():self.index[word] = Term(id=word)
+    self.index[word].insert(docId=i, position=j)
 
     print()
 
@@ -95,6 +93,8 @@ def merge(index,t1,t2,d):
 def textQuery(index,terms,mergeCache):
  commonDocs=set()
 
+ if len(terms)==1:return list(index[terms[0]].docTerms.keys())
+
  for i in range(1,len(terms),1):
 
   if (terms[0],terms[i]) not in mergeCache.keys():
@@ -120,14 +120,22 @@ def queryResults(index,query):
    print()
    queries.append(textQuery(index,termsTemp,mergeCache))
   queries.append('*')
+ return queries
 
 def preProcessor(text):
  stemmer = Stemmer()
- stemResult = stemmer.stem(text)
  normalizer = Normalizer()
- normalResult = normalizer.normalize(stemResult)
- tokens = word_tokenize(normalResult)
- return tokens
+ tokens = word_tokenize(text)
+ stopWords=stopwords_list()
+ finalTokens=[]
+
+ for i in range(len(tokens)):
+     if tokens[i] not in stopWords:
+      stemTemp=stemmer.stem(tokens[i])
+      normalTemp=normalizer.normalize(stemTemp)
+      finalTokens.append(normalTemp)
+
+ return finalTokens
 
 
 docsDatabaseFileName="IR1_7k_news.xlsx"
@@ -136,6 +144,8 @@ queryTest="مرزبان مربی سپاهان"
 #test=preProcessor(test)
 docs = pd.read_excel(docsDatabaseFileName)
 docs=list(docs['content'])
+print()
 index=Index(docs).index
 results=queryResults(index,queryTest)
+print(results)
 print()
