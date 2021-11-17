@@ -39,6 +39,20 @@ class Term:
    self.docTerms[docId] = DocTerm(docId, self.id)
   self.docTerms[docId].insert(position=position)
 
+ def __eq__(self, other):
+     return self.freq==other.freq
+
+ def __lt__(self, other):
+     if self.freq<other.freq:return True
+     else:return False
+
+ def __gt__(self, other):
+     if self.freq > other.freq:
+         return True
+     else:
+         return False
+
+
 class Index:
 
  def __init__(self):
@@ -115,7 +129,6 @@ def textQuery(index,terms,mergeCache):
       #print()
       commonDocs = commonDocs & mergeCache[(terms[i], terms[j])]
 
-
  #print()
 
  return list(commonDocs)
@@ -162,8 +175,7 @@ def tokenMerger(tokens):
     return mergedToken
 
 def indexer(index,docs,haveStopWords=False):
-    print("length of recieved docs is")
-    print(len(docs))
+
     for i in range(len(docs)):
         doc = preProcessor(docs[i],haveStopWords)
         #print()
@@ -173,58 +185,85 @@ def indexer(index,docs,haveStopWords=False):
 
     print("done")
 
-if __name__ == '__main__':
+def getOrderedFreqsOfTerms(Index):
+    freqs=[]
+    rankedTerms = sorted(Index.index.values())
+    print()
+    for i in range(len(rankedTerms)):
+        freqs.append(rankedTerms[i].freq)
+    return freqs
 
- #processorTest='قرآن و اصلاح نويسه ها و استفاده از نیم‌فاصله پردازش را آسان مي كند'
- ##processorTest='ما هم برای وصل کردن آمدیم! ولی برای پردازش، جدا بهتر نیست؟'
- #normalizer=Normalizer()
- #stemmer=Stemmer()
- #lemmatizer=Lemmatizer()
- #tokenTest=word_tokenize(processorTest)
- #normalTest=normalizer.normalize(tokenTest[0])
- #stemTest=stemmer.stem(tokenTest[0])
- #lemtest=lemmatizer.lemmatize(tokenTest[0])
- ##sentTokenTest=sent_tokenize(processorTest)
- ##processorTestResult=preProcessor(processorTest)
- ##print()
 
- docsDatabaseFileName="IR1_7k_news.xlsx"
- queryTest="مرزبان مربی سپاهان"
- dataSize=100
- haveStopWords=False
+#processorTest='قرآن و اصلاح نويسه ها و استفاده از نیم‌فاصله پردازش را آسان مي كند'
+##processorTest='ما هم برای وصل کردن آمدیم! ولی برای پردازش، جدا بهتر نیست؟'
+#normalizer=Normalizer()
+#stemmer=Stemmer()
+#lemmatizer=Lemmatizer()
+#tokenTest=word_tokenize(processorTest)
+#normalTest=normalizer.normalize(tokenTest[0])
+#stemTest=stemmer.stem(tokenTest[0])
+#lemtest=lemmatizer.lemmatize(tokenTest[0])
+##sentTokenTest=sent_tokenize(processorTest)
+##processorTestResult=preProcessor(processorTest)
+##print()
+docsDatabaseFileName="IR1_7k_news.xlsx"
+queryTest="مرزبان مربی سپاهان"
+dataSize=100
+haveStopWords=False
 
- table = pd.read_excel(docsDatabaseFileName)
- docs=list(table['content'][0:dataSize])
- titles=list(table['title'])
+table = pd.read_excel(docsDatabaseFileName)
+docs=list(table['content'][0:dataSize])
+titles=list(table['title'])
+fileIndex = Index()
 
- fileIndex = Index()
- indexer(fileIndex,docs,haveStopWords)
+indexer(fileIndex,docs,haveStopWords)
 
- print()
- tokenAxis = np.arange(0, fileIndex.tokenCount)
- tokenAxisLog = np.log(tokenAxis)
- termAxis = np.asarray(fileIndex.termAxis)
- termAxisLog = np.log(termAxis)
- results = queryResults(fileIndex.index, queryTest)
- #print()
+results = queryResults(fileIndex.index, queryTest)
 
- for i in range(len(results)):
-     for j in range(len(results[i])):
-         if j==0:
-          print("the query is")
-          print(results[i][j])
-          print("the amount of returend docs are")
-          print(len(results[i][1]))
-         else:
-          for k in range(len(results[i][j])):
-              print("doc id is")
-              print(results[i][j][k])
-              print("title is")
-              print(titles[results[i][j][k]])
-          print("---------------------------------------------------------------------------------")
+for i in range(len(results)):
+    for j in range(len(results[i])):
+        if j==0:
+         print("the query is")
+         print(results[i][j])
+         print("the amount of returend docs are")
+         print(len(results[i][1]))
+        else:
+         for k in range(len(results[i][j])):
+             print("doc id is")
+             print(results[i][j][k])
+             print("title is")
+             print(titles[results[i][j][k]])
+         print("---------------------------------------------------------------------------------")
+#print()
 
- #print()
- plt.plot(tokenAxis,termAxis,label="normal rep")
- plt.show()
- plt.plot(tokenAxisLog,termAxisLog,label="log rep")
- plt.show()
+
+orderedFreqs=np.asarray(getOrderedFreqsOfTerms(fileIndex)[::-1])
+print()
+ranks=np.arange(1,len(orderedFreqs)+1)
+print()
+plt.plot(ranks,orderedFreqs,label="rank,freq")
+plt.plot(ranks,1/ranks,label="rank,1/rank")
+plt.legend()
+plt.show()
+
+tokenAxis = np.arange(1, fileIndex.tokenCount+1)
+tokenAxisLog=np.log10(tokenAxis)
+termAxis = np.asarray(fileIndex.termAxis)
+termAxisLog=np.log10(termAxis)
+print()
+plt.plot(tokenAxis,termAxis,label="normal rep")
+plt.plot(tokenAxisLog,termAxisLog,label="log rep")
+A = np.vstack([tokenAxisLog, np.ones(len(tokenAxisLog))]).T
+m, c = np.linalg.lstsq(A, termAxisLog, rcond=None)[0]
+heapsLaw=tokenAxisLog*m + c
+plt.plot(tokenAxisLog,heapsLaw,label="heaps law")
+plt.legend()
+plt.show()
+k=np.power(c,10)
+print("slope or b in heaps law is")
+print(m)
+print("k in heaps law is")
+print(k)
+
+
+

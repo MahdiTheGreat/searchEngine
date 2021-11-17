@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c14e3427-e1ff-4988-88cf-12a1c6e3f411" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/searchEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/searchEngine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simpleSearchEngine.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/searchEngine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="118" selection-start-line="118" selection-end-line="118" selection-end-column="9" />
+            <state relative-caret-position="312">
+              <caret line="219" lean-forward="true" selection-start-line="219" selection-end-line="219" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -50,10 +47,14 @@
       <find>done</find>
       <find>تهران</find>
       <find>print()</find>
+      <find>x</find>
+      <find>y</find>
     </findStrings>
     <replaceStrings>
       <replace>l</replace>
       <replace>#print()</replace>
+      <replace>tokenAxis</replace>
+      <replace>termAxis</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -64,12 +65,13 @@
       <list>
         <option value="$PROJECT_DIR$/venv/simpleSearchEngine.py" />
         <option value="$PROJECT_DIR$/simpleSearchEngine.py" />
+        <option value="$PROJECT_DIR$/venv/plotTest.py" />
         <option value="$PROJECT_DIR$/searchEngine.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="676" />
+    <option name="x" value="-7" />
     <option name="width" value="697" />
     <option name="height" value="735" />
   </component>
@@ -86,6 +88,11 @@
             <path>
               <item name="searchEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="searchEngine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="searchEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="searchEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -112,7 +119,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.searchEngine">
+  <component name="RunManager" selected="Python.simpleSearchEngine">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="searchEngine" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -127,6 +134,25 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="plotTest" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="searchEngine" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/plotTest.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -161,9 +187,6 @@
       <module name="searchEngine" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -182,9 +205,11 @@
     <list>
       <item itemvalue="Python.simpleSearchEngine" />
       <item itemvalue="Python.searchEngine" />
+      <item itemvalue="Python.plotTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.plotTest" />
         <item itemvalue="Python.searchEngine" />
       </list>
     </recent_temporary>
@@ -205,12 +230,12 @@
       <workItem from="1637150328456" duration="111000" />
       <workItem from="1637150489869" duration="43000" />
       <workItem from="1637150743830" duration="164000" />
-      <workItem from="1637150947899" duration="3006000" />
+      <workItem from="1637150947899" duration="12456000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="61222000" />
+    <option name="totallyTimeSpent" value="70672000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -223,14 +248,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49882352" visible="true" weight="0.14750378" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49882352" visible="true" weight="0.022692889" />
       <window_info id="Structure" order="1" sideWeight="0.5011765" side_tool="true" weight="0.04311649" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info active="true" anchor="bottom" id="Concurrent Activities Diagram" visible="true" weight="0.049099836" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.049099836" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.049099836" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.049099836" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -244,9 +269,9 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" sideWeight="0.9001721" visible="true" weight="0.022692889" />
+      <window_info anchor="right" id="SciView" order="3" sideWeight="0.9518072" visible="true" weight="0.022692889" />
       <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="right" x="0" y="0" width="295" height="544" id="Documentation" order="5" sideWeight="0.099827886" side_tool="true" visible="true" weight="0.022692889" />
+      <window_info anchor="right" x="0" y="0" width="295" height="544" id="Documentation" order="5" sideWeight="0.04819277" side_tool="true" visible="true" weight="0.022692889" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,14 +282,20 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/searchEngine.py</url>
-          <line>202</line>
-          <option name="timeStamp" value="6" />
+          <line>252</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/searchEngine.py</url>
+          <line>242</line>
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/searchEngine$searchEngine.coverage" NAME="searchEngine Coverage Results" MODIFIED="1637153899399" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/searchEngine$plotTest.coverage" NAME="plotTest Coverage Results" MODIFIED="1637169854069" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
+    <SUITE FILE_PATH="coverage/searchEngine$searchEngine.coverage" NAME="searchEngine Coverage Results" MODIFIED="1637169666015" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="breakpointCondition">
@@ -369,10 +400,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/venv/plotTest.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python39/Lib/tokenize.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="59">
+          <caret line="391" selection-start-line="391" selection-end-line="391" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/searchEngine.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="118" selection-start-line="118" selection-end-line="118" selection-end-column="9" />
+        <state relative-caret-position="312">
+          <caret line="219" lean-forward="true" selection-start-line="219" selection-end-line="219" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
