@@ -42,27 +42,20 @@ class Term:
 class Index:
 
  def __init__(self):
-
   self.index = dict()
   self.termAxis=[]
   self.tokenCount=0
-  self.lock = threading.Lock()
   self.termCount=0
 
  def indexInsert(self,term,docId,position):
+     self.tokenCount += 1
+     if term not in self.index.keys():
+         self.index[term] = Term(id=term)
+         self.termCount += 1
+     self.index[term].insert(docId=docId, position=position)
+     self.termAxis.append(self.termCount)
      #print()
-     self.lock.acquire()
-     try:
-         self.tokenCount += 1
-         if term not in self.index.keys():
-             self.index[term] = Term(id=term)
-             self.termCount += 1
-         self.index[term].insert(docId=docId, position=position)
-         self.termAxis.append(self.termCount)
-         #print()
-     finally:
-         self.lock.release()
-         #print()
+
 
 def correctWordDistanceChecker(positions1,positions2,distance):
  correctDistancsefreq=0
@@ -75,6 +68,7 @@ def correctWordDistanceChecker(positions1,positions2,distance):
        correctDistancsefreq+=1
  #print()
  return correctDistancsefreq
+
 
 def merge(index,t1,t2,d):
  commonDocs = []
@@ -168,10 +162,11 @@ def tokenMerger(tokens):
     return mergedToken
 
 def indexer(index,docs,haveStopWords=False):
+    print("length of recieved docs is")
+    print(len(docs))
     for i in range(len(docs)):
         doc = preProcessor(docs[i],haveStopWords)
         #print()
-
         for j in range(len(doc)):
             term = doc[j]
             index.indexInsert(term,i,j)
@@ -196,36 +191,16 @@ if __name__ == '__main__':
  docsDatabaseFileName="IR1_7k_news.xlsx"
  queryTest="مرزبان مربی سپاهان"
  dataSize=100
- cpuNumber=multiprocessing.cpu_count()
- multiThreaded=True
  haveStopWords=False
 
  table = pd.read_excel(docsDatabaseFileName)
  docs=list(table['content'][0:dataSize])
  titles=list(table['title'])
- stepSize=int(dataSize/cpuNumber)
 
  fileIndex = Index()
+ indexer(fileIndex,docs,haveStopWords)
 
- steps=0
- threads=[]
- if multiThreaded:
-
-  for steps in range(cpuNumber):
-      t = threading.Thread(target=indexer, args=(fileIndex,docs[steps*stepSize:(steps+1)*stepSize],haveStopWords))
-      threads.append(t)
-      t.start()
-  if steps*stepSize!=len(docs):
-      t = threading.Thread(target=indexer, args=(fileIndex, docs[steps * stepSize:len(docs)],haveStopWords))
-      threads.append(t)
-      t.start()
-
-  for i in range(len(threads)):
-      threads[i].join()
-
-
- else:indexer(fileIndex,docs,haveStopWords)
-
+ print()
  tokenAxis = np.arange(0, fileIndex.tokenCount)
  tokenAxisLog = np.log(tokenAxis)
  termAxis = np.asarray(fileIndex.termAxis)
