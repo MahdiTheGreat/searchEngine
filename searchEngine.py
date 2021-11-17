@@ -3,6 +3,8 @@ from hazm import *
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import threading
+import multiprocessing
 
 class UniversalSet(set):
     def __and__(self, other):
@@ -21,7 +23,7 @@ class DocTerm:
  def insert(self, position):
   self.positions.append(position)
   self.positions = sorted(self.positions)
-  print()
+  #print()
 
 class Term:
 
@@ -39,44 +41,39 @@ class Term:
 
 class Index:
 
- def __init__(self, docs):
+ def __init__(self):
 
   self.index = dict()
   self.termAxis=[]
   self.tokenCount=0
-  termCount=0
+  self.lock = threading.Lock()
+  self.termCount=0
 
-
-  for i in range(len(docs)):
-   print()
-   doc = preProcessor(docs[i])
-   print()
-
-   for j in range(len(doc)):
-
-    word = doc[j]
-    self.tokenCount+=1
-    if word not in self.index.keys():
-        self.index[word] = Term(id=word)
-        termCount+=1
-    self.index[word].insert(docId=i, position=j)
-    self.termAxis.append(termCount)
-
-    print()
-
-
-
+ def indexInsert(self,term,docId,position):
+     #print()
+     self.lock.acquire()
+     try:
+         self.tokenCount += 1
+         if term not in self.index.keys():
+             self.index[term] = Term(id=term)
+             self.termCount += 1
+         self.index[term].insert(docId=docId, position=position)
+         self.termAxis.append(self.termCount)
+         #print()
+     finally:
+         self.lock.release()
+         #print()
 
 def correctWordDistanceChecker(positions1,positions2,distance):
  correctDistancsefreq=0
- print()
+ #print()
  for i in range(len(positions1)):
   for j in range(len(positions2)):
-   print()
+   #print()
    if positions2[j]-positions1[i]==distance:
-       print()
+       #print()
        correctDistancsefreq+=1
- print()
+ #print()
  return correctDistancsefreq
 
 def merge(index,t1,t2,d):
@@ -87,30 +84,29 @@ def merge(index,t1,t2,d):
  w2Docs = index[t2].docTerms
  i=0
  j=0
- print()
+ #print()
  while i<len(w1DocIds) and j<len(w2DocIds):
-     print()
+     #print()
      if w1DocIds[i]!=w2DocIds[j]:
          if w1DocIds[i]<w2DocIds[j]:
              i+=1
-             print()
+             #print()
          else:
              j+=1
-             print()
+             #print()
      else:
           positions1=w1Docs[w1DocIds[i]].positions
           positions2=w2Docs[w2DocIds[j]].positions
-          print()
-          checkResult=correctWordDistanceChecker(positions1,positions2, d)
-          print()
+          #print()
+          checkResult=correctWordDistanceChecker(positions1,positions2,d)
+          #print()
           if checkResult:
            commonDocs.append(w1DocIds[i])
           i += 1
           j += 1
 
- print()
+ #print()
  return commonDocs
-
 
 def textQuery(index,terms,mergeCache):
  commonDocs=UniversalSet(set())
@@ -121,12 +117,12 @@ def textQuery(index,terms,mergeCache):
       if (terms[i],terms[j]) not in mergeCache.keys():
            mergeResult=set(merge(index,terms[i],terms[j],j-i))
            mergeCache[(terms[i],terms[j])]=mergeResult
-           print()
-      print()
+           #print()
+      #print()
       commonDocs = commonDocs & mergeCache[(terms[i], terms[j])]
 
 
- print()
+ #print()
 
  return list(commonDocs)
 
@@ -135,19 +131,19 @@ def queryResults(index,query):
  mergeCache=dict()
  queryTokens=word_tokenize(query)
  terms=preProcessor(query)
- print()
+ #print()
+
  for i in range(len(terms),0,-1):
   j=0
   while j+i<=len(terms):
    termsTemp=terms[j:j+i]
-   queries.append([tokenMerger(queryTokens[j:j+i]),textQuery(index,termsTemp,mergeCache)])
-   print()
+   queries.append([tokenMerger(queryTokens[j:j+i]),sorted(textQuery(index,termsTemp,mergeCache))])
    j += 1
-   print()
+   #print()
 
  return queries
 
-def preProcessor(text,haveStopWords=0):
+def preProcessor(text,haveStopWords=False):
  stemmer = Stemmer()
  normalizer = Normalizer()
  tokens = word_tokenize(text)
@@ -158,7 +154,7 @@ def preProcessor(text,haveStopWords=0):
      if (tokens[i] not in stopWords) or haveStopWords:
       normalTemp = normalizer.normalize(tokens[i])
       stemTemp=stemmer.stem(normalTemp)
-      print()
+      #print()
       if (stemTemp not in stopWords) or haveStopWords:finalTokens.append(stemTemp)
 
  return finalTokens
@@ -171,53 +167,89 @@ def tokenMerger(tokens):
 
     return mergedToken
 
+def indexer(index,docs,haveStopWords=False):
+    for i in range(len(docs)):
+        doc = preProcessor(docs[i],haveStopWords)
+        #print()
 
-#processorTest='قرآن و اصلاح نويسه ها و استفاده از نیم‌فاصله پردازش را آسان مي كند'
-##processorTest='ما هم برای وصل کردن آمدیم! ولی برای پردازش، جدا بهتر نیست؟'
-#normalizer=Normalizer()
-#stemmer=Stemmer()
-#lemmatizer=Lemmatizer()
-#tokenTest=word_tokenize(processorTest)
-#normalTest=normalizer.normalize(tokenTest[0])
-#stemTest=stemmer.stem(tokenTest[0])
-#lemtest=lemmatizer.lemmatize(tokenTest[0])
-##sentTokenTest=sent_tokenize(processorTest)
-##processorTestResult=preProcessor(processorTest)
-#print()
+        for j in range(len(doc)):
+            term = doc[j]
+            index.indexInsert(term,i,j)
+
+    print("done")
+
+if __name__ == '__main__':
+
+ #processorTest='قرآن و اصلاح نويسه ها و استفاده از نیم‌فاصله پردازش را آسان مي كند'
+ ##processorTest='ما هم برای وصل کردن آمدیم! ولی برای پردازش، جدا بهتر نیست؟'
+ #normalizer=Normalizer()
+ #stemmer=Stemmer()
+ #lemmatizer=Lemmatizer()
+ #tokenTest=word_tokenize(processorTest)
+ #normalTest=normalizer.normalize(tokenTest[0])
+ #stemTest=stemmer.stem(tokenTest[0])
+ #lemtest=lemmatizer.lemmatize(tokenTest[0])
+ ##sentTokenTest=sent_tokenize(processorTest)
+ ##processorTestResult=preProcessor(processorTest)
+ ##print()
+
+ docsDatabaseFileName="IR1_7k_news.xlsx"
+ queryTest="مرزبان مربی سپاهان"
+ dataSize=100
+ cpuNumber=multiprocessing.cpu_count()
+ multiThreaded=True
+ haveStopWords=False
+
+ table = pd.read_excel(docsDatabaseFileName)
+ docs=list(table['content'][0:dataSize])
+ titles=list(table['title'])
+ stepSize=int(dataSize/cpuNumber)
+
+ fileIndex = Index()
+
+ steps=0
+ threads=[]
+ if multiThreaded:
+
+  for steps in range(cpuNumber):
+      t = threading.Thread(target=indexer, args=(fileIndex,docs[steps*stepSize:(steps+1)*stepSize],haveStopWords))
+      threads.append(t)
+      t.start()
+  if steps*stepSize!=len(docs):
+      t = threading.Thread(target=indexer, args=(fileIndex, docs[steps * stepSize:len(docs)],haveStopWords))
+      threads.append(t)
+      t.start()
+
+  for i in range(len(threads)):
+      threads[i].join()
 
 
-docsDatabaseFileName="IR1_7k_news.xlsx"
-queryTest="مرزبان مربی سپاهان"
-dataSize=1000
+ else:indexer(fileIndex,docs,haveStopWords)
 
-table = pd.read_excel(docsDatabaseFileName)
-docs=list(table['content'][0:dataSize])
-titles=list(table['title'])
+ tokenAxis = np.arange(0, fileIndex.tokenCount)
+ tokenAxisLog = np.log(tokenAxis)
+ termAxis = np.asarray(fileIndex.termAxis)
+ termAxisLog = np.log(termAxis)
+ results = queryResults(fileIndex.index, queryTest)
+ #print()
 
-print()
+ for i in range(len(results)):
+     for j in range(len(results[i])):
+         if j==0:
+          print("the query is")
+          print(results[i][j])
+          print("the amount of returend docs are")
+          print(len(results[i][1]))
+         else:
+          for k in range(len(results[i][j])):
+              print("doc id is")
+              print(results[i][j][k])
+              print("title is")
+              print(titles[results[i][j][k]])
+          print("---------------------------------------------------------------------------------")
 
-fileIndex=Index(docs)
-tokenAxis=np.arange(0,fileIndex.tokenCount)
-tokenAxisLog=np.log(tokenAxis)
-termAxis=np.asarray(fileIndex.termAxis)
-termAxisLog=np.log(termAxis)
-results=queryResults(fileIndex.index,queryTest)
-print()
-
-for i in range(len(results)):
-    for j in range(len(results[i])):
-        if j==0:
-         print("the query is")
-         print(results[i][j])
-        else:
-         for k in range(len(results[i][j])):
-             print("doc id is")
-             print(results[i][j][k])
-             print("title is")
-             print(titles[results[i][j][k]])
-         print("---------------------------------------------------------------------------------")
-
-print()
-plt.plot(tokenAxis,termAxis,label="normal rep")
-plt.plot(tokenAxisLog,termAxisLog,label="log rep")
-plt.show()
+ #print()
+ plt.plot(tokenAxis,termAxis,label="normal rep")
+ plt.show()
+ plt.plot(tokenAxisLog,termAxisLog,label="log rep")
+ plt.show()
