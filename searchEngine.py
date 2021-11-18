@@ -161,7 +161,7 @@ def preProcessor(text,haveStopWords=False):
      if (tokens[i] not in stopWords) or haveStopWords:
       normalTemp = normalizer.normalize(tokens[i])
       stemTemp=stemmer.stem(normalTemp)
-      #print()
+      print()
       if (stemTemp not in stopWords) or haveStopWords:finalTokens.append(stemTemp)
 
  return finalTokens
@@ -174,14 +174,14 @@ def tokenMerger(tokens):
 
     return mergedToken
 
-def indexer(index,docs,haveStopWords=False):
+def indexer(index,docs,ids,haveStopWords=False):
 
     for i in range(len(docs)):
         doc = preProcessor(docs[i],haveStopWords)
         #print()
         for j in range(len(doc)):
             term = doc[j]
-            index.indexInsert(term,i,j)
+            index.indexInsert(term,ids[i],j)
 
     print("done")
 
@@ -192,6 +192,18 @@ def getOrderedFreqsOfTerms(Index):
     for i in range(len(rankedTerms)):
         freqs.append(rankedTerms[i].freq)
     return freqs
+
+def idMaker(urls):
+    ids=[]
+    for i in range(len(urls)):
+        ids.append(int(urls[i].split("/")[4]))
+    return ids
+
+def idTransDictMaker(ids):
+    idTransDict=dict()
+    for i in range(len(ids)):
+        idTransDict[ids[i]]=i
+    return idTransDict
 
 
 #processorTest='قرآن و اصلاح نويسه ها و استفاده از نیم‌فاصله پردازش را آسان مي كند'
@@ -206,17 +218,24 @@ def getOrderedFreqsOfTerms(Index):
 ##sentTokenTest=sent_tokenize(processorTest)
 ##processorTestResult=preProcessor(processorTest)
 ##print()
-docsDatabaseFileName="IR1_7k_news.xlsx"
+docsDatabaseFileName="IR1_7k_news100.xlsx"
+maxSize=200
 queryTest="مرزبان مربی سپاهان"
-dataSize=100
+#queryTest="دانشگاه صنعتی امیرکبیر"
+dataSize=maxSize
 haveStopWords=False
 
-table = pd.read_excel(docsDatabaseFileName)
+table = pd.read_excel(docsDatabaseFileName,)
 docs=list(table['content'][0:dataSize])
-titles=list(table['title'])
+titles=list(table['title'][0:dataSize])
+urls=list(table['url'][0:dataSize])
+ids=idMaker(urls)
+idTransDict=idTransDictMaker(ids)
+print()
 fileIndex = Index()
 
-indexer(fileIndex,docs,haveStopWords)
+indexer(fileIndex,docs,ids,haveStopWords)
+print()
 
 results = queryResults(fileIndex.index, queryTest)
 
@@ -232,38 +251,65 @@ for i in range(len(results)):
              print("doc id is")
              print(results[i][j][k])
              print("title is")
-             print(titles[results[i][j][k]])
+             print(titles[idTransDict[results[i][j][k]]])
          print("---------------------------------------------------------------------------------")
 #print()
 
 
-orderedFreqs=np.asarray(getOrderedFreqsOfTerms(fileIndex)[::-1])
-print()
-ranks=np.arange(1,len(orderedFreqs)+1)
-print()
-plt.plot(ranks,orderedFreqs,label="rank,freq")
-plt.plot(ranks,1/ranks,label="rank,1/rank")
-plt.legend()
-plt.show()
-
-tokenAxis = np.arange(1, fileIndex.tokenCount+1)
-tokenAxisLog=np.log10(tokenAxis)
-termAxis = np.asarray(fileIndex.termAxis)
-termAxisLog=np.log10(termAxis)
-print()
-plt.plot(tokenAxis,termAxis,label="normal rep")
-plt.plot(tokenAxisLog,termAxisLog,label="log rep")
-A = np.vstack([tokenAxisLog, np.ones(len(tokenAxisLog))]).T
-m, c = np.linalg.lstsq(A, termAxisLog, rcond=None)[0]
-heapsLaw=tokenAxisLog*m + c
-plt.plot(tokenAxisLog,heapsLaw,label="heaps law")
-plt.legend()
-plt.show()
-k=np.power(c,10)
-print("slope or b in heaps law is")
-print(m)
-print("k in heaps law is")
-print(k)
+#orderedFreqs=np.asarray(getOrderedFreqsOfTerms(fileIndex)[::-1])
+#logOrderedFreqs=np.log10(orderedFreqs)
+#ranks=np.arange(1,len(orderedFreqs)+1)
+#logRanks=np.log10(ranks)
+#
+##A = np.vstack([logRanks, np.ones(len(logRanks))]).T
+##m, c = np.linalg.lstsq(A, logOrderedFreqs, rcond=None)[0]
+##k=pow(c,10)
+#k=np.average(np.multiply(orderedFreqs,ranks))
+#
+#zipsLaw=(1/ranks)*k
+#logZipsLaw=np.log10(zipsLaw)
+#
+#plt.plot(logRanks,logOrderedFreqs,label="(log r,log cf)")
+#plt.plot(logRanks,logZipsLaw,label="(log r,log(k/r))")
+#plt.legend()
+#plt.show()
+#
+#plt.plot(ranks,orderedFreqs,label="(r,cf)")
+#plt.plot(ranks,zipsLaw,label="(r,k/r)")
+#plt.legend()
+#plt.show()
+#
+##print("slope or b in zipfs law is")
+##print(m)
+#print("k in zipfs law is")
+#print(k)
+#
+#tokenAxis = np.arange(1, fileIndex.tokenCount+1)
+#tokenAxisLog=np.log10(tokenAxis)
+#termAxis = np.asarray(fileIndex.termAxis)
+#termAxisLog=np.log10(termAxis)
+#
+#A = np.vstack([tokenAxisLog, np.ones(len(tokenAxisLog))]).T
+#m, c = np.linalg.lstsq(A, termAxisLog, rcond=None)[0]
+#k=pow(10,c)
+#
+#heapsLaw=k*np.power(tokenAxis,m)
+#logHeapsLaw=np.log10(heapsLaw)
+#
+#plt.plot(tokenAxisLog,termAxisLog,label="(log T,Log M",)
+#plt.plot(tokenAxisLog,logHeapsLaw,label="(log T,Log(kT^b))",)
+#plt.legend()
+#plt.show()
+#
+#plt.plot(tokenAxis,termAxis,label="(tokens,terms)")
+#plt.plot(tokenAxis,heapsLaw,label="heaps law")
+#plt.legend()
+#plt.show()
+#
+#print("slope or b in heaps law is")
+#print(m)
+#print("k in heaps law is")
+#print(k)
 
 
 
