@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c14e3427-e1ff-4988-88cf-12a1c6e3f411" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/searchEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/searchEngine.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -10,13 +11,27 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/searchEngine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="181" column="33" lean-forward="true" selection-start-line="181" selection-start-column="33" selection-end-line="181" selection-end-column="33" />
+            <state relative-caret-position="822">
+              <caret line="327" selection-start-line="327" selection-end-line="328" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -102,6 +117,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/heapslaw tests" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -145,6 +161,9 @@
       <module name="searchEngine" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -233,12 +252,13 @@
       <workItem from="1637150489869" duration="43000" />
       <workItem from="1637150743830" duration="164000" />
       <workItem from="1637150947899" duration="12456000" />
-      <workItem from="1637170649267" duration="11699000" />
+      <workItem from="1637170649267" duration="26879000" />
+      <workItem from="1637342611943" duration="597000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="82371000" />
+    <option name="totallyTimeSpent" value="98148000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -253,13 +273,13 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49882352" visible="true" weight="0.12178517" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49882352" visible="true" weight="0.123298034" />
       <window_info id="Structure" order="1" sideWeight="0.5011765" side_tool="true" weight="0.04311649" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.049099836" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.049099836" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.049099836" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.049099836" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3289689" />
@@ -273,29 +293,17 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" sideWeight="0.9380379" visible="true" weight="0.022692889" />
-      <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="right" x="0" y="0" width="295" height="544" id="Documentation" order="5" sideWeight="0.061962135" side_tool="true" visible="true" weight="0.022692889" />
+      <window_info active="true" anchor="right" id="SciView" order="3" sideWeight="0.9476268" visible="true" weight="0.022692889" />
+      <window_info anchor="right" id="Database" order="4" sideWeight="0.49913943" weight="0.06959153" />
+      <window_info anchor="right" x="0" y="0" width="295" height="544" id="Documentation" order="5" sideWeight="0.05237316" side_tool="true" visible="true" weight="0.022692889" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <condition expression="tokens[i]==&quot;سرمربی&quot; or tokens[i]==&quot;مربیان&quot;" language="Python" />
-          <url>file://$PROJECT_DIR$/searchEngine.py</url>
-          <line>163</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/searchEngine$plotTest.coverage" NAME="plotTest Coverage Results" MODIFIED="1637169854069" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/searchEngine$searchEngine.coverage" NAME="searchEngine Coverage Results" MODIFIED="1637223886671" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/searchEngine$searchEngine.coverage" NAME="searchEngine Coverage Results" MODIFIED="1637345032191" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/searchEngine$simpleSearchEngine.coverage" NAME="simpleSearchEngine Coverage Results" MODIFIED="1637170836164" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="debuggerHistoryManager">
@@ -409,8 +417,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/searchEngine.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="181" column="33" lean-forward="true" selection-start-line="181" selection-start-column="33" selection-end-line="181" selection-end-column="33" />
+        <state relative-caret-position="822">
+          <caret line="327" selection-start-line="327" selection-end-line="328" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>

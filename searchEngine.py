@@ -3,8 +3,7 @@ from hazm import *
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import threading
-import multiprocessing
+
 
 class UniversalSet(set):
     def __and__(self, other):
@@ -14,21 +13,24 @@ class UniversalSet(set):
         return other
 
 class DocTerm:
-# DocTerm = a list of positions def __init__(self, docId, termId):
+
  def __init__(self,docId,termId):
   self.docId = docId
   self.termId = termId
   self.positions = []
+  self.freq=0
 
  def insert(self, position):
   self.positions.append(position)
   self.positions = sorted(self.positions)
+  self.freq+=1
+
   #print()
 
 class Term:
 
  def __init__(self, id):
-  # Term = a list of DocTerms def __init__(self, id):
+
   self.id = id
   self.docTerms = dict()
   self.freq=0
@@ -150,7 +152,7 @@ def queryResults(index,query):
 
  return queries
 
-def preProcessor(text,haveStopWords=False):
+def preProcessor(text,haveStopWords=False,haveStemming=True):
  stemmer = Stemmer()
  normalizer = Normalizer()
  tokens = word_tokenize(text)
@@ -160,9 +162,9 @@ def preProcessor(text,haveStopWords=False):
  for i in range(len(tokens)):
      if (tokens[i] not in stopWords) or haveStopWords:
       normalTemp = normalizer.normalize(tokens[i])
-      stemTemp=stemmer.stem(normalTemp)
-      print()
-      if (stemTemp not in stopWords) or haveStopWords:finalTokens.append(stemTemp)
+      if haveStemming:stemTemp=stemmer.stem(normalTemp)
+      else:stemTemp=normalTemp
+      finalTokens.append(stemTemp)
 
  return finalTokens
 
@@ -174,10 +176,10 @@ def tokenMerger(tokens):
 
     return mergedToken
 
-def indexer(index,docs,ids,haveStopWords=False):
+def indexer(index,docs,ids,haveStopWords=False,haveStemming=True):
 
     for i in range(len(docs)):
-        doc = preProcessor(docs[i],haveStopWords)
+        doc = preProcessor(docs[i],haveStopWords=haveStopWords,haveStemming=haveStemming)
         #print()
         for j in range(len(doc)):
             term = doc[j]
@@ -206,24 +208,27 @@ def idTransDictMaker(ids):
     return idTransDict
 
 
-#processorTest='قرآن و اصلاح نويسه ها و استفاده از نیم‌فاصله پردازش را آسان مي كند'
-##processorTest='ما هم برای وصل کردن آمدیم! ولی برای پردازش، جدا بهتر نیست؟'
+
+
+docsDatabaseFileName="IR1_7k_news.xlsx"
+maxSize=8000
+query="واکسن آسترازنکا"
+
+#tokens=word_tokenize(query)
 #normalizer=Normalizer()
 #stemmer=Stemmer()
-#lemmatizer=Lemmatizer()
-#tokenTest=word_tokenize(processorTest)
-#normalTest=normalizer.normalize(tokenTest[0])
-#stemTest=stemmer.stem(tokenTest[0])
-#lemtest=lemmatizer.lemmatize(tokenTest[0])
-##sentTokenTest=sent_tokenize(processorTest)
-##processorTestResult=preProcessor(processorTest)
-##print()
-docsDatabaseFileName="IR1_7k_news100.xlsx"
-maxSize=200
-queryTest="مرزبان مربی سپاهان"
-#queryTest="دانشگاه صنعتی امیرکبیر"
+#print()
+#for i in range(len(tokens)):
+#    tokens[i]=normalizer.normalize(tokens[i])
+#print()
+#for i in range(len(tokens)):
+#    tokens[i]=stemmer.stem(tokens[i])
+#print()
+
+
 dataSize=maxSize
-haveStopWords=False
+haveStopWords=True
+haveStemming=True
 
 table = pd.read_excel(docsDatabaseFileName,)
 docs=list(table['content'][0:dataSize])
@@ -234,82 +239,93 @@ idTransDict=idTransDictMaker(ids)
 print()
 fileIndex = Index()
 
-indexer(fileIndex,docs,ids,haveStopWords)
+indexer(fileIndex,docs,ids,haveStopWords=haveStopWords,haveStemming=haveStemming)
 print()
 
-results = queryResults(fileIndex.index, queryTest)
+results = queryResults(fileIndex.index, query)
 
 for i in range(len(results)):
     for j in range(len(results[i])):
         if j==0:
-         print("the query is")
+         print("پرسمان هست:")
          print(results[i][j])
-         print("the amount of returend docs are")
+         print("تعداد اسناد بازیابی شده برابر است با:")
          print(len(results[i][1]))
         else:
          for k in range(len(results[i][j])):
-             print("doc id is")
+             print("شناسه سند:")
              print(results[i][j][k])
-             print("title is")
+             print("تیتر:")
              print(titles[idTransDict[results[i][j][k]]])
          print("---------------------------------------------------------------------------------")
-#print()
 
 
-#orderedFreqs=np.asarray(getOrderedFreqsOfTerms(fileIndex)[::-1])
-#logOrderedFreqs=np.log10(orderedFreqs)
-#ranks=np.arange(1,len(orderedFreqs)+1)
-#logRanks=np.log10(ranks)
-#
-##A = np.vstack([logRanks, np.ones(len(logRanks))]).T
-##m, c = np.linalg.lstsq(A, logOrderedFreqs, rcond=None)[0]
-##k=pow(c,10)
-#k=np.average(np.multiply(orderedFreqs,ranks))
-#
-#zipsLaw=(1/ranks)*k
-#logZipsLaw=np.log10(zipsLaw)
-#
-#plt.plot(logRanks,logOrderedFreqs,label="(log r,log cf)")
-#plt.plot(logRanks,logZipsLaw,label="(log r,log(k/r))")
-#plt.legend()
-#plt.show()
-#
-#plt.plot(ranks,orderedFreqs,label="(r,cf)")
-#plt.plot(ranks,zipsLaw,label="(r,k/r)")
-#plt.legend()
-#plt.show()
-#
-##print("slope or b in zipfs law is")
-##print(m)
-#print("k in zipfs law is")
-#print(k)
-#
-#tokenAxis = np.arange(1, fileIndex.tokenCount+1)
-#tokenAxisLog=np.log10(tokenAxis)
-#termAxis = np.asarray(fileIndex.termAxis)
-#termAxisLog=np.log10(termAxis)
-#
-#A = np.vstack([tokenAxisLog, np.ones(len(tokenAxisLog))]).T
-#m, c = np.linalg.lstsq(A, termAxisLog, rcond=None)[0]
-#k=pow(10,c)
-#
-#heapsLaw=k*np.power(tokenAxis,m)
-#logHeapsLaw=np.log10(heapsLaw)
-#
-#plt.plot(tokenAxisLog,termAxisLog,label="(log T,Log M",)
-#plt.plot(tokenAxisLog,logHeapsLaw,label="(log T,Log(kT^b))",)
-#plt.legend()
-#plt.show()
-#
-#plt.plot(tokenAxis,termAxis,label="(tokens,terms)")
-#plt.plot(tokenAxis,heapsLaw,label="heaps law")
-#plt.legend()
-#plt.show()
-#
-#print("slope or b in heaps law is")
+
+orderedFreqs=np.asarray(getOrderedFreqsOfTerms(fileIndex)[::-1])
+logOrderedFreqs=np.log10(orderedFreqs)
+ranks=np.arange(1,len(orderedFreqs)+1)
+logRanks=np.log10(ranks)
+
+#A = np.vstack([logRanks, np.ones(len(logRanks))]).T
+#m, c = np.linalg.lstsq(A, logOrderedFreqs, rcond=None)[0]
+#k=pow(c,10)
+k=np.average(np.multiply(orderedFreqs,ranks))
+
+zipsLaw=(1/ranks)*k
+logZipsLaw=np.log10(zipsLaw)
+
+plt.plot(logRanks,logOrderedFreqs,label="(log r,log cf)")
+plt.plot(logRanks,logZipsLaw,label="(log r,log(k/r))")
+plt.legend()
+plt.show()
+
+plt.plot(ranks,orderedFreqs,label="(r,cf)")
+plt.plot(ranks,zipsLaw,label="(r,k/r)")
+plt.legend()
+plt.show()
+
+#print("slope or b in zipfs law is")
 #print(m)
-#print("k in heaps law is")
-#print(k)
+print("k in zipfs law is")
+print(k)
+
+tokenAxis = np.arange(1, fileIndex.tokenCount+1)
+tokenAxisLog=np.log10(tokenAxis)
+termAxis = np.asarray(fileIndex.termAxis)
+termAxisLog=np.log10(termAxis)
+
+A = np.vstack([tokenAxisLog, np.ones(len(tokenAxisLog))]).T
+m, c = np.linalg.lstsq(A, termAxisLog, rcond=None)[0]
+k=pow(10,c)
+
+heapsLaw=k*np.power(tokenAxis,m)
+logHeapsLaw=np.log10(heapsLaw)
+
+plt.plot(tokenAxisLog,termAxisLog,label="(log T,Log M",)
+plt.plot(tokenAxisLog,logHeapsLaw,label="(log T,Log(kT^b))",)
+plt.legend()
+plt.show()
+
+plt.plot(tokenAxis,termAxis,label="(tokens,terms)")
+plt.plot(tokenAxis,heapsLaw,label="heaps law")
+plt.legend()
+plt.show()
+
+print("slope or b in heaps law is")
+print(m)
+print("k in heaps law is")
+print(k)
+
+print("avg error between heaps law approximation and actual dictionary size is")
+print(np.average(np.abs(termAxis-heapsLaw)))
+print(" the final approximation of the heaps law is")
+print(heapsLaw[len(heapsLaw)-1])
+print("but the final size of the dictionary is")
+print(termAxis[len(termAxis)-1])
+
+
+
+
 
 
 
