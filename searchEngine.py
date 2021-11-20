@@ -212,7 +212,7 @@ def idTransDictMaker(ids):
 
 docsDatabaseFileName="IR1_7k_news.xlsx"
 maxSize=8000
-query="واکسن آسترازنکا"
+query="دانشگاه صنعتی امیرکبیر"
 
 #tokens=word_tokenize(query)
 #normalizer=Normalizer()
@@ -227,7 +227,7 @@ query="واکسن آسترازنکا"
 
 
 dataSize=maxSize
-haveStopWords=True
+haveStopWords=False
 haveStemming=True
 
 table = pd.read_excel(docsDatabaseFileName,)
