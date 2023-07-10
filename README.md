@@ -38,16 +38,44 @@ Where M is the size of the vocabulary, T is the number of tokens in the collecti
 law predicts a line with a slope of about 1/2. Both Heap's law and Zipf's law are empirical.
 We use the least squares method to calculate the parameters of Heap's law.
 
+![image](https://github.com/MahdiTheGreat/searchEngine/assets/47212121/694a3183-a57a-4688-830f-6dc264e16405)
 
 
-
-
-documents	With rooting	Without rooting	Dictionary size with rooting	Dictionary size without rooting	mean error with rotting	Mean error without rooting
-500	8659	10772	8320	10377	169	213
-1000	12296	15569	11691	14811	199	244
-1500	14894	19067	14045	17981	294	364
-2000	18549	24126	19421	25616	374	537
 As you can see, with different numbers of documents, in both cases with rooting and without rooting, Heap's law applies, but since the number of tokens and words increases without rooting, it is natural to see more errors and there is a greater distance between the predicted value and the actual size of the dictionary, and as a result, the law of heaps is less applicable. In other words, due to the side effects of not using rooting, which is equal to increasing the number of tokens, the law of heaps is less applicable in this case, and rooting by itself does not have much effect. Below are Diagrams related to Heap's law in both cases with rooting and without rooting for the number of documents equal to 500, 1000, 1500, and 2000. These diagrams are shown in the specified order.
+
+![image](https://github.com/MahdiTheGreat/searchEngine/assets/47212121/5764dbaf-d4a0-44b9-9c95-beeefe63aaaa)
+
+![image](https://github.com/MahdiTheGreat/searchEngine/assets/47212121/f5a47f15-6c1f-4ff9-b704-4e1a282cfb0b)
+
+![image](https://github.com/MahdiTheGreat/searchEngine/assets/47212121/803de3b2-074b-4afd-80ca-69544215d7c6)
+
+![image](https://github.com/MahdiTheGreat/searchEngine/assets/47212121/bd3e52a4-6a00-4fed-be80-0c619a6605d6)
+
+![image](https://github.com/MahdiTheGreat/searchEngine/assets/47212121/388d9bd9-b9a3-463b-a913-261df27873f4)
+
+![image](https://github.com/MahdiTheGreat/searchEngine/assets/47212121/f7b80832-581f-4351-8c46-b2890ea2c310)
+
+![image](https://github.com/MahdiTheGreat/searchEngine/assets/47212121/15e4fdb4-e68d-4954-a6a5-cd88b107571d)
+
+![image](https://github.com/MahdiTheGreat/searchEngine/assets/47212121/a8588723-668e-4f0c-9513-cd12b43cbb04)
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
  
  
  
