@@ -25,7 +25,7 @@ document. Consider the number of each news as the ID of that document (news) and
 
 # Zipf's law
 According to Zipf’s law The rth most frequent term has frequency proportional to 1/r or:
- cfi∝1/r  cfi= k/r   log cf=log k - log r
+ cfi∝1/r --> cfi= k/r --> log cf=log k - log r
 where k is a normalizing constant and cf is collection frequency: the number of occurrences of the term t in the collection.
  
 As can be seen, the Zipf rule applies with k equal to 72563, with repeated words removed.
@@ -33,7 +33,7 @@ As can be seen, the Zipf rule applies with k equal to 72563, with repeated words
 Zipf rule also applies with k equal to 80430 while repeated words are not removed. However, in the second case, more normalization is needed with a higher k, and in the first case, this rule is more applicable. It should be noted that k is obtained by the average of the set of dot multiplication or element-wise of the rank set of words (according to the frequency of their appearance in the documents).
 # The validity of Heap's law 
 Heaps’ law: 
-M = kTb    log M=log k + b × log T 
+M = kT^b --> log M=log k + b × log T 
 Where M is the size of the vocabulary, T is the number of tokens in the collection, 0.4<b<0.6, and 30 > k < 100. In a log-log plot of vocabulary size M vs. T, Heaps’
 law predicts a line with a slope of about 1/2. Both Heap's law and Zipf's law are empirical.
 We use the least squares method to calculate the parameters of Heap's law.
